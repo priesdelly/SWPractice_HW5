@@ -10,6 +10,7 @@ exports.getHospitals = async (req, res, next) => {
       .status(200)
       .json({ success: true, count: hospitals.length, data: hospitals });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ success: false });
   }
 };
@@ -25,6 +26,7 @@ exports.getHospital = async (req, res, next) => {
     }
     res.status(200).json({ success: true, data: hospital });
   } catch (err) {
+    console.log(err);
     res.status(400).json({ success: false });
   }
 };
@@ -33,8 +35,13 @@ exports.getHospital = async (req, res, next) => {
 //@route    POST /api/v1/hospitals
 //@access   Private
 exports.createHospital = async (req, res, next) => {
-  const hospital = await Hospital.create(req.body);
-  res.status(201).json({ success: true, data: hospital });
+  try {
+    const hospital = await Hospital.create(req.body);
+    res.status(201).json({ success: true, data: hospital });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ success: false });
+  }
 };
 
 //@desc     Update hospital
@@ -51,6 +58,7 @@ exports.updateHospital = async (req, res, next) => {
     }
     res.status(200).json({ success: true, data: hospital });
   } catch (err) {
+    console.log(err);
     return res.status(400).json({ success: false });
   }
 };
